@@ -31,6 +31,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>LSBackgroundOnly</key>
+	<string>1</string>
 	<key>LSMinimumSystemVersionByArchitecture</key>
 	<dict>
 		<key>x86_64</key>
