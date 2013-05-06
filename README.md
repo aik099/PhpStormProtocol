@@ -17,6 +17,7 @@ Installing on Mac
 2. go to cloned folder
 2. copy folder ```PhpStorm Protocol.app``` to ```/Applications/``` folder
 3. delete cloned folder
+4. go to PhpStorm Menu: Tools → Create Command-Line Launcher and create it
 
 Installing on Windows
 =====================
