@@ -4,7 +4,7 @@ This app allows to use ```pstorm://``` protocol to open a file in a [PhpStorm ID
 
 Following string must be specified as an editor in your app:
 ```bash
-pstorm://open/?url=file://%file&line=%line
+pstorm://open/?url=file://%f&line=%l
 ```
 If something doesn't work, then feel free to [submit an issue](https://github.com/aik099/PhpStormProtocol/issues/new) on GitHub.
 
