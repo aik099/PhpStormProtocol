@@ -1,3 +1,4 @@
+
 Overview
 ========
 This app allows to use ```pstorm://``` protocol to open a file in a [PhpStorm IDE](http://www.jetbrains.com/phpstorm/) the same way as it's done in [TextMate, (section 21.2)](http://manual.macromates.com/en/using_textmate_from_terminal.html).
@@ -13,6 +14,8 @@ More reading about protocol handlers: http://pla.nette.org/en/how-open-files-in-
 
 Installing on Mac
 =================
+Please follow instructions from the [this page](LinCastor.md) if the `PhpStorm Protocol.app` won't work as expected on you OS X version.
+
 1. clone this repository
 2. go to cloned folder
 2. copy folder ```PhpStorm Protocol.app``` to ```/Applications/``` folder
