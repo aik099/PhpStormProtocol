@@ -6,7 +6,7 @@ Since PhpStormProtocol doesn't work as expected on OS X 10.9 (Mavericks), then I
 2. unpack and move to __Applications__ folder
 3. create new protocol handler using configuration from below:
 ![LinCastor Configuration](LinCastorConfig.png)
-4. specify `pstorm://open/?url=file://%F&line=%L` in your debugger configuration (e.g. in the `xdebug.file_link_format` setting in the `php.ini`)
+4. specify `pstorm://open/?url=file://%f&line=%l` in your debugger configuration (e.g. in the `xdebug.file_link_format` setting in the `php.ini`)
 
 ## LinCastor Shell Script
 
@@ -28,7 +28,9 @@ Since PhpStormProtocol doesn't work as expected on OS X 10.9 (Mavericks), then I
 REGEX="^url=file://(.*)&line=(.*)$"
 
 if [[ $URL_QUERY =~ $REGEX ]]; then
-	osascript -e "tell application \"PhpStorm EAP\" to activate"
+	#Depending on which version of PHPStorm you're running, uncomment the appropriate app name:
+	#osascript -e "tell application \"PhpStorm EAP\" to activate"
+	#osascript -e "tell application \"PhpStorm\" to activate"
 	/usr/local/bin/pstorm "${BASH_REMATCH[1]}:${BASH_REMATCH[2]}"
 	exit 0
 fi
