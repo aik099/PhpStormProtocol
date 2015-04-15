@@ -15,6 +15,7 @@ More reading about protocol handlers: http://pla.nette.org/en/how-open-files-in-
 Installing on Mac
 =================
 Please follow instructions from the [this page](LinCastor.md) if the `PhpStorm Protocol.app` won't work as expected on you OS X version.
+PhpStorm 8+ (Mac version only) has built-in url handler and `phpstorm://open?file=%f&line=%l` url needs to be used instead (see https://youtrack.jetbrains.com/issue/IDEA-65879).
 
 1. clone this repository
 2. go to cloned folder
