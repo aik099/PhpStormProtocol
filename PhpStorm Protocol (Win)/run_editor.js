@@ -10,15 +10,38 @@ var settings = {
 };
 
 
-// don't change anything below this line, unless you're know what you're doing
-var url = WScript.Arguments(0),
+// don't change anything below this line, unless you know what you're doing
+var	url = WScript.Arguments(0),
 	match = /^pstorm:\/\/open\/\?url=file:\/\/(.+)&line=(\d+)$/.exec(url),
-	editor = '"c:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\PhpStorm.exe" --line %line% "%file%"';
+	project = '',
+	editor = '"C:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\PhpStorm.exe"';
 
-if ( match ) {
+if (match) {
+
 	var	shell = new ActiveXObject('WScript.Shell'),
+		file_system = new ActiveXObject('Scripting.FileSystemObject'),
 		file = decodeURIComponent(match[1]).replace(/\+/g, ' '),
-		command = editor.replace(/%line%/g, match[2]).replace(/%file%/g, file).replace(/\//g, '\\')/*.replace(/\\/g, '\\\\')*/;
+		search_path = file.replace(/\//g, '\\');
+
+	while (search_path.lastIndexOf('\\') != -1) {
+		search_path = search_path.substring(0, search_path.lastIndexOf('\\'));
+
+		if(file_system.FileExists(search_path+'\\.idea\\.name')) {
+			project = search_path;
+			break;
+		}
+	}
+
+	if (project != '') {
+		editor += ' "%project%"';
+	}
+
+	editor += ' --line %line% "%file%"';
+
+	var command = editor.replace(/%line%/g, match[2])
+						.replace(/%file%/g, file)
+						.replace(/%project%/g, project)
+						.replace(/\//g, '\\');
 
 	shell.Exec(command);
 	shell.AppActivate(settings.window_title);
