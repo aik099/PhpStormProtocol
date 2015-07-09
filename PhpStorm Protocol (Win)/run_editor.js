@@ -3,10 +3,10 @@ var settings = {
 	x64: true,
 
 	// Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-	folder_name: 'PhpStorm 8.0.3',
+	folder_name: 'PhpStorm 9.0',
 
 	// Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-	window_title: 'PhpStorm 8.0.3'
+	window_title: 'PhpStorm 9.0'
 };
 
 
