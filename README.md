@@ -31,3 +31,6 @@ Installing on Windows
 5. agree to whatever Registry Editor asks you
 6. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file, because each PhpStorm version is installed into it's own sub-folder!
 7. delete cloned folder
+
+#### Working under another path?
+You can make use of the [project alias settings](/PhpStorm Protocol (Win)/run_editor.js#L11-L14) in case you are working under a network share or Vagrant.

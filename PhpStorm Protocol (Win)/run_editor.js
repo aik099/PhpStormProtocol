@@ -6,7 +6,12 @@ var settings = {
 	folder_name: 'PhpStorm 9.0',
 
 	// Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-	window_title: 'PhpStorm 9.0'
+	window_title: 'PhpStorm 9.0',
+
+	// In case your file is mapped via a network share and paths do not match.
+	// eg. /var/www will can replaced with Y:/
+	projects_basepath: '',
+	projects_path_alias: ''
 };
 
 
@@ -22,6 +27,10 @@ if (match) {
 		file_system = new ActiveXObject('Scripting.FileSystemObject'),
 		file = decodeURIComponent(match[1]).replace(/\+/g, ' '),
 		search_path = file.replace(/\//g, '\\');
+
+	if (settings.projects_basepath != '' && settings.projects_path_alias != '') {
+		file = file.replace(new RegExp('^' + settings.projects_basepath), settings.projects_path_alias);
+	}
 
 	while (search_path.lastIndexOf('\\') != -1) {
 		search_path = search_path.substring(0, search_path.lastIndexOf('\\'));
