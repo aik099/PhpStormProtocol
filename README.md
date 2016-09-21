@@ -12,6 +12,17 @@ If something doesn't work, then feel free to [submit an issue](https://github.co
 
 More reading about protocol handlers: http://pla.nette.org/en/how-open-files-in-ide-from-debugger.
 
+Installing on Linux
+===================
+
+A package for Arch Linux (Arch, Manjaro, Antergos, etc.) is available from the [AUR](https://aur.archlinux.org/packages/phpstorm-url-handler/).
+If you're using other Linux distribution then follow these instructions:
+
+1. clone [https://github.com/sanduhrs/phpstorm-url-handler](https://github.com/sanduhrs/phpstorm-url-handler) repository
+2. go to cloned folder
+3. read installation instructions in [README.md](https://github.com/sanduhrs/phpstorm-url-handler/blob/master/README.md)
+4. delete cloned folder
+
 Installing on Mac
 =================
 Please follow instructions from the [this page](LinCastor.md) if the `PhpStorm Protocol.app` won't work as expected on you OS X version.
