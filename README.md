@@ -19,8 +19,8 @@ PhpStorm 8+ (Mac version only) has built-in url handler and `phpstorm://open?fil
 
 1. clone this repository
 2. go to cloned folder
-2. copy folder ```PhpStorm Protocol.app``` to ```/Applications/``` folder
-3. delete cloned folder
+3. copy folder ```PhpStorm Protocol.app``` to ```/Applications/``` folder
+4. delete cloned folder
 
 Installing on Windows
 =====================
