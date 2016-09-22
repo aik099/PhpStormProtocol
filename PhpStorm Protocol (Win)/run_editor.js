@@ -17,7 +17,7 @@ var settings = {
 
 // don't change anything below this line, unless you know what you're doing
 var	url = WScript.Arguments(0),
-	match = /^pstorm:\/\/open\/\?url=file:\/\/(.+)&line=(\d+)$/.exec(url),
+	match = /^pstorm:\/\/open\?url=file:\/\/(.+)&line=(\d+)$/.exec(url),
 	project = '',
 	editor = '"C:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\PhpStorm.exe"';
 

@@ -6,7 +6,7 @@ Since PhpStormProtocol doesn't work as expected on OS X 10.9 (Mavericks), then I
 2. unpack and move to __Applications__ folder
 3. create new protocol handler using configuration from below:
 ![LinCastor Configuration](LinCastorConfig.png)
-4. specify `pstorm://open/?url=file://%f&line=%l` in your debugger configuration (e.g. in the `xdebug.file_link_format` setting in the `php.ini`)
+4. specify `pstorm://open?url=file://%f&line=%l` in your debugger configuration (e.g. in the `xdebug.file_link_format` setting in the `php.ini`)
 5. you maybe need to use different file and line placeholders (instead of `%f` and `%l`) depending on which debugger you're configuring:
  * `%F` and `%L` - for [In-Portal Debugger](http://www.in-portal.org/)
  * `%file` and `%line` - for [Nette Debugger](http://pla.nette.org/en/how-open-files-in-ide-from-debugger)
