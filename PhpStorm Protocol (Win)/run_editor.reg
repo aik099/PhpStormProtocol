@@ -1,8 +1,8 @@
 REGEDIT4
 
-[HKEY_CLASSES_ROOT\pstorm]
-@="URL:pstorm Protocol"
+[HKEY_CLASSES_ROOT\phpstorm]
+@="URL:phpstorm Protocol"
 "URL Protocol"=""
 
-[HKEY_CLASSES_ROOT\pstorm\shell\open\command]
+[HKEY_CLASSES_ROOT\phpstorm\shell\open\command]
 @="wscript \"C:\\Program Files\\PhpStorm Protocol (Win)\\run_editor.js\" \"%1\""
