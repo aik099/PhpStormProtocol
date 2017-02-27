@@ -10,6 +10,12 @@ Following string must be specified as an editor in your app:
 ```bash
 phpstorm://open?url=file://%f&line=%l
 ```
+
+Alternative syntax is supported for cross-platform compatibility with PhPStorm 8+ (Mac version)
+```bash
+phpstorm://open?file=%f&line=%l
+```
+
 If something doesn't work, then feel free to [submit an issue](https://github.com/aik099/PhpStormProtocol/issues/new) on GitHub.
 
 

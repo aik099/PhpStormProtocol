@@ -17,7 +17,7 @@ var settings = {
 
 // don't change anything below this line, unless you know what you're doing
 var	url = WScript.Arguments(0),
-	match = /^phpstorm:\/\/open\?url=file:\/\/(.+)&line=(\d+)$/.exec(url),
+	match = /^phpstorm:\/\/open\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
 	project = '',
 	editor = '"C:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\PhpStorm.exe"';
 
@@ -25,7 +25,7 @@ if (match) {
 
 	var	shell = new ActiveXObject('WScript.Shell'),
 		file_system = new ActiveXObject('Scripting.FileSystemObject'),
-		file = decodeURIComponent(match[1]).replace(/\+/g, ' '),
+		file = decodeURIComponent(match[2]).replace(/\+/g, ' '),
 		search_path = file.replace(/\//g, '\\');
 
 	if (settings.projects_basepath != '' && settings.projects_path_alias != '') {
@@ -47,7 +47,7 @@ if (match) {
 
 	editor += ' --line %line% "%file%"';
 
-	var command = editor.replace(/%line%/g, match[2])
+	var command = editor.replace(/%line%/g, match[3])
 						.replace(/%file%/g, file)
 						.replace(/%project%/g, project)
 						.replace(/\//g, '\\');
