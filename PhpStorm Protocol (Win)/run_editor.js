@@ -3,10 +3,10 @@ var settings = {
 	x64: true,
 
 	// Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-	folder_name: 'PhpStorm 2016.1.2',
+	folder_name: 'PhpStorm 2016.3',
 
 	// Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-	window_title: 'PhpStorm 2016.1.2',
+	window_title: 'PhpStorm 2016.3',
 
 	// In case your file is mapped via a network share and paths do not match.
 	// eg. /var/www will can replaced with Y:/
@@ -17,9 +17,9 @@ var settings = {
 
 // don't change anything below this line, unless you know what you're doing
 var	url = WScript.Arguments(0),
-	match = /^phpstorm:\/\/open\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
+	match = /^phpstorm:\/\/open\/\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
 	project = '',
-	editor = '"C:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\PhpStorm.exe"';
+	editor = '"C:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\phpstorm.exe"';
 
 if (match) {
 
