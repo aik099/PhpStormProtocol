@@ -17,9 +17,9 @@ var settings = {
 
 // don't change anything below this line, unless you know what you're doing
 var	url = WScript.Arguments(0),
-	match = /^phpstorm:\/\/open\/\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
+	match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
 	project = '',
-	editor = '"C:\\' + (settings.x64 ? 'Program Files (x86)' : 'Program Files') + '\\JetBrains\\' + settings.folder_name + '\\bin\\phpstorm.exe"';
+	editor = '"C:\\' + (settings.x64 ? 'Program Files' : 'Program Files (x86)') + '\\JetBrains\\' + settings.folder_name + '\\bin\\phpstorm.exe"';
 
 if (match) {
 
