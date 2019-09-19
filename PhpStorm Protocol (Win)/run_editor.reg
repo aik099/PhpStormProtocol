@@ -5,4 +5,4 @@ REGEDIT4
 "URL Protocol"=""
 
 [HKEY_CLASSES_ROOT\phpstorm\shell\open\command]
-@="wscript \"C:\\Program Files\\PhpStorm Protocol (Win)\\run_editor.js\" \"%1\""
+@="wscript \"C:\\Program Files\\PhpStorm Protocol (Win)\\run_editor.js\" \"%1\" //E:JScript"
