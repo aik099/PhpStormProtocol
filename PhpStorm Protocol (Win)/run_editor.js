@@ -83,10 +83,8 @@ function configureToolboxSettings(settings) {
     // read the maximum version from toolbox filesystem
     for (var objEnum = new Enumerator(fileCollection); !objEnum.atEnd(); objEnum.moveNext()) {
         var folderObject = ( objEnum.item() );
-        if (folderObject.Name.lastIndexOf('plugins') === -1) {
-            if( compareVersion(folderObject.Name, maxVersionFolder) > 0 ){
-                maxVersionFolder = folderObject.Name;
-            }
+        if (folderObject.Name.lastIndexOf('plugins') === -1 && compareVersion(folderObject.Name, maxVersionFolder) > 0 ){
+            maxVersionFolder = folderObject.Name;
         }
     }
 
