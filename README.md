@@ -53,4 +53,7 @@ Installing on Windows
 7. delete cloned folder
 
 #### Working under another path?
-You can make use of the [project alias settings](/PhpStorm Protocol (Win)/run_editor.js#L11-L14) in case you are working under a network share or Vagrant.
+* You can make use of the [project alias settings](PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
+
+* If you're using the JetBrains Toolbox, you're only need to set the [toolBoxActive](PhpStorm%20Protocol%20(Win)/run_editor.js#L2-L3) flag to ```true``` and no other settings needs to be configured, because all settings will read automatically  
+
