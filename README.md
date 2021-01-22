@@ -50,6 +50,22 @@ Installing on Windows
 4. double click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
 5. agree to whatever Registry Editor asks you
 6. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file, because each PhpStorm version is installed into it's own sub-folder!
+   #### run_editor.js: 
+    ```
+    // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
+    folder_name: '<phpstorm_folder_name>',
+  
+    // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
+    window_title: '<phpstorm_window_name>',
+    ```
+   #### updated run_editor.js
+   ```
+   // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
+   folder_name: 'PhpStorm 2017.1.4',
+
+   // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
+   window_title: 'PhpStorm 2017.1.4',
+   ```
 7. delete cloned folder
 
 #### Working under another path?

@@ -6,7 +6,7 @@ var settings = {
     x64: true,
 
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-    folder_name: 'PhpStorm 2017.1.4',
+    folder_name: '<PhpStorm x.y.z folder name where the phpstorm executable has been installed>',
 
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
     window_title: 'PhpStorm 2017.1.4',
