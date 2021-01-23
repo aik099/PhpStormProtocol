@@ -56,7 +56,7 @@ Installing on Windows
     folder_name: '<phpstorm_folder_name>',
   
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: '<phpstorm_window_name>',
+    window_title: '<phpstorm_window_title>',
     ```
    #### updated run_editor.js
    ```
