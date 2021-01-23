@@ -9,7 +9,7 @@ var settings = {
     folder_name: '<phpstorm_folder_name>',
 
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: '<phpstorm_folder_name>',
+    window_title: '<phpstorm_window_title>',
 
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
