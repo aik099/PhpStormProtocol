@@ -6,10 +6,10 @@ var settings = {
     x64: true,
 
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-    folder_name: 'PhpStorm 2017.1.4',
+    folder_name: '<phpstorm_folder_name>',
 
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: 'PhpStorm 2017.1.4',
+    window_title: '<phpstorm_window_title>',
 
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
