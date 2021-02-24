@@ -77,7 +77,6 @@ function configureToolboxSettings(settings) {
     // Reference the File collection of the Text directory
     var fileCollection = folder.SubFolders;
 
-
     var maxMajor = 0,
         maxMinor = 0,
         maxPatch = 0,
@@ -101,12 +100,13 @@ function configureToolboxSettings(settings) {
                 maxMinor = 0;
                 maxPatch = 0;
             }
+            maxMajor = major;
 
             if (maxMinor === 0 || maxMinor <= minor) {
-                maxMinor = minor;
                 if (maxMinor < minor) {
                     maxPatch = 0;
                 }
+                maxMinor = minor;
 
                 if (maxPatch === 0 || maxPatch <= patch) {
                     maxPatch = patch;
