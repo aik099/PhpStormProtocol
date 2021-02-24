@@ -86,19 +86,31 @@ function configureToolboxSettings(settings) {
     // read the maximum version from toolbox filesystem
     for (var objEnum = new Enumerator(fileCollection); !objEnum.atEnd(); objEnum.moveNext()) {
         var folderObject = ( objEnum.item() );
-        if (folderObject.Name.lastIndexOf('plugins') === -1) {
-            var versionMatch = /(\d+)\.(\d+)\.(\d+)/.exec(folderObject.Name),
-                major = parseInt(versionMatch[ 1 ]),
-                minor = parseInt(versionMatch[ 2 ]),
-                patch = parseInt(versionMatch[ 3 ]);
-            if (maxMajor === 0 || maxMajor <= major) {
-                maxMajor = major;
-                if (maxMinor === 0 || maxMinor <= minor) {
-                    maxMinor = minor;
-                    if (maxPatch === 0 || maxPatch <= patch) {
-                        maxPatch = patch;
-                        maxVersionFolder = folderObject.Name;
-                    }
+
+        if (folderObject.Name.lastIndexOf('plugins') !== -1) {
+            continue;
+        }
+
+        var versionMatch = /(\d+)\.(\d+)\.(\d+)/.exec(folderObject.Name),
+            major = parseInt(versionMatch[ 1 ]),
+            minor = parseInt(versionMatch[ 2 ]),
+            patch = parseInt(versionMatch[ 3 ]);
+
+        if (maxMajor === 0 || maxMajor <= major) {
+            if (maxMajor < major) {
+                maxMinor = 0;
+                maxPatch = 0;
+            }
+
+            if (maxMinor === 0 || maxMinor <= minor) {
+                maxMinor = minor;
+                if (maxMinor < minor) {
+                    maxPatch = 0;
+                }
+
+                if (maxPatch === 0 || maxPatch <= patch) {
+                    maxPatch = patch;
+                    maxVersionFolder = folderObject.Name;
                 }
             }
         }
