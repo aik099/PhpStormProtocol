@@ -1,6 +1,6 @@
 var settings = {
     // flag to active Jetbrain Toolbox configuration
-    toolBoxActive: false,
+    toolBoxActive: isToolboxInstalled(),
 
     // Set to 'true' (without quotes) if run on Windows 64bit. Set to 'false' (without quotes) otherwise.
     x64: true,
@@ -61,6 +61,14 @@ if (match) {
 
     shell.Exec(command);
     shell.AppActivate(settings.window_title);
+}
+
+function isToolboxInstalled() {
+	var shell = new ActiveXObject('WScript.Shell'),
+        appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
+        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0';
+
+	return (new ActiveXObject('Scripting.FileSystemObject')).FolderExists(toolboxDirectory);
 }
 
 function configureToolboxSettings(settings) {
