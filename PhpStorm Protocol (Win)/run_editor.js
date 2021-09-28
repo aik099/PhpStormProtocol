@@ -6,7 +6,7 @@ var settings = {
     x64: true,
 
     // Set to disk letter, where PhpStorm was installed to (e.g. C:)
-    disk_letter: 'D:',
+    disk_letter: 'C:',
 
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
