@@ -5,11 +5,14 @@ var settings = {
     // Set to 'true' (without quotes) if run on Windows 64bit. Set to 'false' (without quotes) otherwise.
     x64: true,
 
+    // Set to disk letter, where PhpStorm was installed to (e.g. C:)
+    disk_letter: 'D:',
+
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-    folder_name: '<phpstorm_folder_name>',
+    folder_name: 'PhpStorm 2021.1.2',
 
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: '<phpstorm_window_title>',
+    window_title: 'PhpStorm 2021.1.2',
 
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
@@ -22,7 +25,7 @@ var settings = {
 var url = WScript.Arguments(0),
     match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
     project = '',
-    editor = '"C:\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' ) + '"';
+    editor = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' ) + '"';
 
 if (settings.toolBoxActive) {
     configureToolboxSettings(settings);
