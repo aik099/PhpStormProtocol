@@ -9,17 +9,16 @@ var settings = {
     disk_letter: 'C:',
 
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-    folder_name: 'PhpStorm 2019.1.3',
+    folder_name: '<phpstorm_folder_name>',
 
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: 'PhpStorm 2019.1.3',
+    window_title: '<phpstorm_window_title>',
 
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
     projects_basepath: '',
-    projects_path_alias: 'aplicatie'
+    projects_path_alias: ''
 };
-
 
 // don't change anything below this line, unless you know what you're doing
 var url = WScript.Arguments(0),
