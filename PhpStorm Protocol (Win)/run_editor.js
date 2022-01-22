@@ -25,7 +25,7 @@ var url = WScript.Arguments(0),
     match        = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
     project      = '',
     process_name = ( settings.x64 ? 'phpstorm64.exe' : 'phpstorm.exe' ),
-    editor       = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\' + process_name : '\\bin\\' + process_name ) + '"';
+    editor       = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + '\\bin\\' + process_name + '"';
 
 if (settings.toolBoxActive) {
     configureToolboxSettings(settings);
