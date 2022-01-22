@@ -9,23 +9,24 @@ var settings = {
     disk_letter: 'C:',
 
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
-    folder_name: '<phpstorm_folder_name>',
+    folder_name: 'PhpStorm 2019.1.3',
 
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: '<phpstorm_window_title>',
+    window_title: 'PhpStorm 2019.1.3',
 
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
     projects_basepath: '',
-    projects_path_alias: ''
+    projects_path_alias: 'aplicatie'
 };
 
 
 // don't change anything below this line, unless you know what you're doing
 var url = WScript.Arguments(0),
-    match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
-    project = '',
-    editor = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' ) + '"';
+    match        = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
+    project      = '',
+    process_name = ( settings.x64 ? 'phpstorm64.exe' : 'phpstorm.exe' ),
+    editor       = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\' + process_name : '\\bin\\' + process_name ) + '"';
 
 if (settings.toolBoxActive) {
     configureToolboxSettings(settings);
@@ -63,7 +64,19 @@ if (match) {
         .replace(/\//g, '\\');
 
     shell.Exec(command);
-    shell.AppActivate(settings.window_title);
+
+    //shell.AppActivate(settings.window_title);
+
+    var locator     = new ActiveXObject('WbemScripting.SWbemLocator'),
+        service     = locator.ConnectServer('.', '/root/CIMV2'),
+        processes   = service.ExecQuery('Select * from Win32_Process WHERE Name = "' + process_name + '"');
+        processEnum = new Enumerator(processes);
+
+        shell.AppActivate(processEnum.item().ProcessId);
+
+    // for (;! processEnum.atEnd(); processEnum.moveNext()) {
+    //     shell.AppActivate(processEnum.item().ProcessId);
+    // }
 }
 
 function isToolboxInstalled() {
