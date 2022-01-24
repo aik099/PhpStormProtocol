@@ -33,8 +33,9 @@ if (match) {
     }
 
 
-    var fileSystemObj = new ActiveXObject('Scripting.FileSystemObject'),
-        process_name  = 'phpstorm.exe';
+    var fileSystemObj    = new ActiveXObject('Scripting.FileSystemObject'),
+        process_name     = 'phpstorm.exe',
+        dateLastModified = 0;
 
         // see if is installed on a 64 path or 32 path...
         for (var objEnum = new Enumerator(['C:\\Program Files (x86)\\JetBrains', 'C:\\Program Files\\JetBrains']); !objEnum.atEnd(); objEnum.moveNext()) {
@@ -44,15 +45,19 @@ if (match) {
             if (fileSystemObj.FolderExists(jetBrainsPath)) {
                 // get PHPStorm folder name from JetBrains path
                 for (var objEnum = new Enumerator(fileSystemObj.GetFolder(jetBrainsPath).SubFolders); !objEnum.atEnd(); objEnum.moveNext()) {
-                    var folderObject = objEnum.item();
+                    var folderObject     = objEnum.item(),
+                        lastModifiedTime = new Date(folderObject.DateLastModified).getTime();
 
-                    // see if is installed as 64 or 32
-                    if (fileSystemObj.FileExists(folderObject.Path + '\\bin\\phpstorm64.exe')) {
-                        process_name = 'phpstorm64.exe';
+                    if (lastModifiedTime > dateLastModified) {
+                        // see if is installed as 64 or 32
+                        if (fileSystemObj.FileExists(folderObject.Path + '\\bin\\phpstorm64.exe')) {
+                            process_name = 'phpstorm64.exe';
+                        }
+
+                        var editor = folderObject.Path + '\\bin\\' + process_name;
+
+                        dateLastModified = lastModifiedTime;
                     }
-
-                    var editor = folderObject.Path + '\\bin\\' + process_name;
-                    //debug(editor);
                 }
             }
         }
