@@ -1,7 +1,4 @@
 var settings = {
-    // flag to active Jetbrain Toolbox configuration
-    toolBoxActive: isToolboxInstalled(),
-
     // Set to 'true' (without quotes) if run on Windows 64bit. Set to 'false' (without quotes) otherwise.
     x64: true,
 
@@ -17,8 +14,16 @@ var settings = {
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
     projects_basepath: '',
-    projects_path_alias: ''
+    projects_path_alias: '',
+	
+    // PhpStorm directory name in Toolbox directory
+    // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1' 
+    toolbox_update_channel_dir: 'ch-0'  
+	
 };
+
+// flag to active Jetbrain Toolbox configuration
+settings.toolBoxActive = isToolboxInstalled(settings);
 
 
 // don't change anything below this line, unless you know what you're doing
@@ -66,10 +71,10 @@ if (match) {
     shell.AppActivate(settings.window_title);
 }
 
-function isToolboxInstalled() {
+function isToolboxInstalled(settings) {
 	var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0';
+        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir;
 
 	return (new ActiveXObject('Scripting.FileSystemObject')).FolderExists(toolboxDirectory);
 }
@@ -77,7 +82,7 @@ function isToolboxInstalled() {
 function configureToolboxSettings(settings) {
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\ch-0\\';
+        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir + '\\';
 
     // Reference the FileSystemObject
     var fso = new ActiveXObject('Scripting.FileSystemObject');
