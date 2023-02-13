@@ -15,15 +15,16 @@ var settings = {
     // eg. /var/www will can replaced with Y:/
     projects_basepath: '',
     projects_path_alias: '',
-	
+
     // PhpStorm directory name in Toolbox directory
     // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1' 
-    toolbox_update_channel_dir: 'ch-0'  
-	
+    // Leave null to use the first PHPStorm version in Toolbox
+    toolbox_update_channel_dir: null
+    
 };
 
 // flag to active Jetbrain Toolbox configuration
-settings.toolBoxActive = isToolboxInstalled(settings);
+settings.toolBoxActive = isToolboxInstalled();
 
 
 // don't change anything below this line, unless you know what you're doing
@@ -32,12 +33,14 @@ var url = WScript.Arguments(0),
     project = '',
     editor = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' ) + '"';
 
+// add JSON support
+includeFile('json2.js');
+
 if (settings.toolBoxActive) {
     configureToolboxSettings(settings);
 }
 
 if (match) {
-
     var shell = new ActiveXObject('WScript.Shell'),
         file_system = new ActiveXObject('Scripting.FileSystemObject'),
         file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' '),
@@ -71,15 +74,44 @@ if (match) {
     shell.AppActivate(settings.window_title);
 }
 
-function isToolboxInstalled(settings) {
-	var shell = new ActiveXObject('WScript.Shell'),
+function isToolboxInstalled() {
+    var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir;
+        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm';
 
-	return (new ActiveXObject('Scripting.FileSystemObject')).FolderExists(toolboxDirectory);
+    return (new ActiveXObject('Scripting.FileSystemObject')).FolderExists(toolboxDirectory);
+}
+
+function getFavoritePhpStormChannel() {
+    var shell = new ActiveXObject('WScript.Shell'),
+        appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
+        settingsFile = appDataLocal + '\\JetBrains\\Toolbox\\.settings.json';
+
+    try {
+        var fileStream = (new ActiveXObject('Scripting.FileSystemObject')).OpenTextFile(settingsFile, 1, false);
+    } catch (error) {
+        return 'ch-0';
+    }
+
+    var settings = JSON.parse(fileStream.ReadAll());
+    fileStream.Close()
+
+    var apps = settings.ordering.local || [];
+    for (var i = 0; i < apps.length; i++) {
+        if (apps[i].application_id == 'PhpStorm') {
+            return apps[i].channel_id;
+        }
+    }
+
+    return 'ch-0'
 }
 
 function configureToolboxSettings(settings) {
+    // Detect Toolbox PHPStorm top channel
+    if (settings.toolbox_update_channel_dir == null) {
+        settings.toolbox_update_channel_dir = getFavoritePhpStormChannel();
+    }
+
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
         toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir + '\\';
@@ -97,6 +129,7 @@ function configureToolboxSettings(settings) {
         maxMinor = 0,
         maxPatch = 0,
         maxVersionFolder = "";
+
     // Traverse through the fileCollection using the FOR loop
     // read the maximum version from toolbox filesystem
     for (var objEnum = new Enumerator(fileCollection); !objEnum.atEnd(); objEnum.moveNext()) {
@@ -141,4 +174,13 @@ function configureToolboxSettings(settings) {
     eval('var productVersion = ' + content + ';');
     settings.window_title = 'PhpStorm ' + productVersion.version;
     editor = '"' + toolboxDirectory + settings.folder_name + '\\' + productVersion.launch[ 0 ].launcherPath.replace(/\//g, '\\') + '"';
+}
+
+function includeFile (filename) {
+    var fso = new ActiveXObject ("Scripting.FileSystemObject");
+    var currentDirectory = WScript.ScriptFullName.substring(0, WScript.ScriptFullName.lastIndexOf('\\'));
+    var fileStream = fso.openTextFile (currentDirectory + '\\' + filename);
+    var fileData = fileStream.readAll();
+    fileStream.Close();
+    eval(fileData);
 }
