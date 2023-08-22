@@ -17,10 +17,9 @@ var settings = {
     projects_path_alias: '',
 
     // PhpStorm directory name in Toolbox directory
-    // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1' 
+    // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1'
     // Leave null to use the first PHPStorm version in Toolbox
     toolbox_update_channel_dir: null
-    
 };
 
 // flag to active Jetbrain Toolbox configuration
@@ -30,8 +29,7 @@ settings.toolBoxActive = isToolboxInstalled();
 // don't change anything below this line, unless you know what you're doing
 var url = WScript.Arguments(0),
     match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
-    project = '',
-    editor = '"' + settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' ) + '"';
+    project = '';
 
 // add JSON support
 includeFile('json2.js');
@@ -44,7 +42,8 @@ if (match) {
     var shell = new ActiveXObject('WScript.Shell'),
         file_system = new ActiveXObject('Scripting.FileSystemObject'),
         file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' '),
-        search_path = file.replace(/\//g, '\\');
+        search_path = file.replace(/\//g, '\\'),
+        editor = '"' + getPhpStormCommandPath() + '"';
 
     if (settings.projects_basepath !== '' && settings.projects_path_alias !== '') {
         file = file.replace(new RegExp('^' + settings.projects_basepath), settings.projects_path_alias);
@@ -80,6 +79,31 @@ function isToolboxInstalled() {
         toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm';
 
     return (new ActiveXObject('Scripting.FileSystemObject')).FolderExists(toolboxDirectory);
+}
+
+function getPhpStormCommandPath() {
+    var shell = new ActiveXObject('WScript.Shell'),
+        appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
+        settingsStateFile = appDataLocal + '\\JetBrains\\Toolbox\\state.json',
+        defaultCommandPath = settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' );
+
+    try {
+        var fileStream = (new ActiveXObject('Scripting.FileSystemObject')).OpenTextFile(settingsStateFile, 1, false);
+    } catch (error) {
+        return defaultCommandPath;
+    }
+
+    var state = JSON.parse(fileStream.ReadAll());
+    fileStream.Close();
+
+    var tools = state.tools || [];
+    for (var i = 0; i < tools.length; i++) {
+        if (tools[i].toolId == 'PhpStorm') {
+            return tools[i].installLocation + '\\' + tools[i].launchCommand.replace(/\//g, '\\');
+        }
+    }
+
+    return defaultCommandPath;
 }
 
 function getFavoritePhpStormChannel() {
