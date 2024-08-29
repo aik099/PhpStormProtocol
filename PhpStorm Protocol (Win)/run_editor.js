@@ -28,7 +28,7 @@ settings.toolBoxActive = isToolboxInstalled();
 
 // don't change anything below this line, unless you know what you're doing
 var url = WScript.Arguments(0),
-    match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+)&line=(\d+)$/.exec(url),
+    match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+?)(?:&line=(\d+))?$/.exec(url),
     project = '';
 
 // add JSON support
@@ -49,12 +49,20 @@ if (match) {
         file = file.replace(new RegExp('^' + settings.projects_basepath), settings.projects_path_alias);
     }
 
-    while (search_path.lastIndexOf('\\') !== -1) {
-        search_path = search_path.substring(0, search_path.lastIndexOf('\\'));
+    // If only a folder is specified, don't look for a project file or line number
+    var isFolder = file_system.FolderExists(search_path);
+    var isFile = file_system.FileExists(search_path);
 
-        if (file_system.FileExists(search_path + '\\.idea\\.name')) {
-            project = search_path;
-            break;
+    if (isFolder) {
+        project = search_path;
+    } else if (isFile) {
+        while (search_path.lastIndexOf('\\') !== -1) {
+            search_path = search_path.substring(0, search_path.lastIndexOf('\\'));
+
+            if (file_system.FileExists(search_path + '\\.idea\\.name')) {
+                project = search_path;
+                break;
+            }
         }
     }
 
@@ -62,7 +70,11 @@ if (match) {
         editor += ' "%project%"';
     }
 
-    editor += ' --line %line% "%file%"';
+    if (match[3]) {
+        editor += ' --line %line% "%file%"';
+    } else if (isFile) {
+        editor += ' "%file%"';
+    }
 
     var command = editor.replace(/%line%/g, match[ 3 ])
         .replace(/%file%/g, file)
