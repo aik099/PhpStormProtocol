@@ -76,7 +76,7 @@ if (match) {
         editor += ' "%file%"';
     }
 
-    var command = editor.replace(/%line%/g, match[ 3 ])
+    var command = editor.replace(/%line%/g, match[3] || '')
         .replace(/%file%/g, file)
         .replace(/%project%/g, project)
         .replace(/\//g, '\\');
