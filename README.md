@@ -11,6 +11,8 @@ Following string must be specified as an editor in your app:
 phpstorm://open?url=file://%f&line=%l
 ```
 
+The **Windows version** also supports opening a directory as project and files without specified line.
+
 Alternative syntax is supported for cross-platform compatibility with PhPStorm 8+ (Mac version)
 ```bash
 phpstorm://open?file=%f&line=%l
@@ -50,11 +52,11 @@ Installing on Windows
 4. double click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
 5. agree to whatever Registry Editor asks you
 6. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file, because each PhpStorm version is installed into it's own sub-folder!
-   #### run_editor.js: 
+   #### run_editor.js:
     ```
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
-  
+
     // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
     window_title: '<phpstorm_window_title>',
     ```
