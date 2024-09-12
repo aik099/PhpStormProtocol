@@ -132,7 +132,7 @@ function getFavoritePhpStormChannel() {
     var settings = JSON.parse(fileStream.ReadAll());
     fileStream.Close()
 
-    var apps = settings.ordering.local || [];
+    var apps = (settings.ordering || {}).local || [];
     for (var i = 0; i < apps.length; i++) {
         if (apps[i].application_id == 'PhpStorm') {
             return apps[i].channel_id;
