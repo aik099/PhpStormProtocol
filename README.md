@@ -51,7 +51,18 @@ Installing on Windows
 3. copy folder ```PhpStorm Protocol (Win)``` to ```C:\Program Files\``` folder
 4. double click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
 5. agree to whatever Registry Editor asks you
-6. **(only, when not using JetBrains ToolBox)** update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file, because each PhpStorm version is installed into it's own sub-folder!
+6. **(only, when using JetBrains ToolBox)** update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file:
+   #### run_editor.js:
+    ```
+    // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
+    toolbox_shell_script: 'PhpStorm.cmd'
+    ```
+   #### updated run_editor.js
+   ```
+    // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
+    toolbox_shell_script: 'pstorm.cmd'
+   ```
+7. **(only, when not using JetBrains ToolBox)** update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file (because each PhpStorm version is installed into it's own sub-folder!):
    #### run_editor.js:
     ```
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
