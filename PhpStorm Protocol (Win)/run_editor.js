@@ -5,10 +5,10 @@ var settings = {
     // Set to disk letter, where PhpStorm was installed to (e.g. C:)
     disk_letter: 'C:',
 
-    // [Change only, when not using JetBrains Toolbox] Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
+    // (only, when not using JetBrains Toolbox) Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
 
-    // [Change only, when not using JetBrains Toolbox] Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
+    // (only, when not using JetBrains Toolbox) Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
     window_title: '<phpstorm_window_title>',
 
     // In case your file is mapped via a network share and paths do not match.
@@ -19,7 +19,10 @@ var settings = {
     // PhpStorm directory name in Toolbox directory
     // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1'
     // Leave null to use the first PHPStorm version in Toolbox
-    toolbox_update_channel_dir: null
+    toolbox_update_channel_dir: null,
+
+    // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
+    toolbox_shell_script: 'PhpStorm.cmd'
 };
 
 // flag to active Jetbrain Toolbox configuration
@@ -226,7 +229,7 @@ function configureToolboxSettings(settings) {
 }
 
 function getToolboxShellScript(appDataLocal) {
-    var shellScript = appDataLocal + '\\JetBrains\\Toolbox\\scripts\\pstorm';
+    var shellScript = appDataLocal + '\\JetBrains\\Toolbox\\scripts\\' + settings.toolbox_shell_script;
 
     if ((new ActiveXObject('Scripting.FileSystemObject')).FileExists(shellScript)) {
         return shellScript;
