@@ -5,10 +5,10 @@ var settings = {
     // Set to disk letter, where PhpStorm was installed to (e.g. C:)
     disk_letter: 'C:',
 
-    // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
+    // [Change only, when not using JetBrains Toolbox] Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
 
-    // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
+    // [Change only, when not using JetBrains Toolbox] Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
     window_title: '<phpstorm_window_title>',
 
     // In case your file is mapped via a network share and paths do not match.
