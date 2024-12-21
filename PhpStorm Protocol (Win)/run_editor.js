@@ -5,10 +5,10 @@ var settings = {
     // Set to disk letter, where PhpStorm was installed to (e.g. C:)
     disk_letter: 'C:',
 
-    // [Change only, when not using JetBrains Toolbox] Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
+    // (only, when not using JetBrains Toolbox) Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
 
-    // [Change only, when not using JetBrains Toolbox] Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
+    // (only, when not using JetBrains Toolbox) Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
     window_title: '<phpstorm_window_title>',
 
     // In case your file is mapped via a network share and paths do not match.
@@ -19,7 +19,10 @@ var settings = {
     // PhpStorm directory name in Toolbox directory
     // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1'
     // Leave null to use the first PHPStorm version in Toolbox
-    toolbox_update_channel_dir: null
+    toolbox_update_channel_dir: null,
+
+    // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
+    toolbox_shell_script: 'PhpStorm.cmd'
 };
 
 // flag to active Jetbrain Toolbox configuration
@@ -96,7 +99,13 @@ function isToolboxInstalled() {
 function getPhpStormCommandPath() {
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        settingsStateFile = appDataLocal + '\\JetBrains\\Toolbox\\state.json',
+        toolboxShellScript = getToolboxShellScript(appDataLocal);
+
+    if (toolboxShellScript !== undefined) {
+        return toolboxShellScript;
+    }
+
+    var settingsStateFile = appDataLocal + '\\JetBrains\\Toolbox\\state.json',
         defaultCommandPath = settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' );
 
     try {
@@ -143,14 +152,21 @@ function getFavoritePhpStormChannel() {
 }
 
 function configureToolboxSettings(settings) {
+    var shell = new ActiveXObject('WScript.Shell'),
+        appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
+        toolboxShellScript = getToolboxShellScript(appDataLocal);
+
+    // The JetBrains Toolbox Shell Script is clever enough to autofocus PhpStorm window after opening a file in it
+    if (toolboxShellScript !== undefined) {
+        return;
+    }
+
     // Detect Toolbox PHPStorm top channel
     if (settings.toolbox_update_channel_dir == null) {
         settings.toolbox_update_channel_dir = getFavoritePhpStormChannel();
     }
 
-    var shell = new ActiveXObject('WScript.Shell'),
-        appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir + '\\';
+    var toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir + '\\';
 
     // Reference the FileSystemObject
     var fso = new ActiveXObject('Scripting.FileSystemObject');
@@ -210,6 +226,16 @@ function configureToolboxSettings(settings) {
     eval('var productVersion = ' + content + ';');
     settings.window_title = 'PhpStorm ' + productVersion.version;
     editor = '"' + toolboxDirectory + settings.folder_name + '\\' + productVersion.launch[ 0 ].launcherPath.replace(/\//g, '\\') + '"';
+}
+
+function getToolboxShellScript(appDataLocal) {
+    var shellScript = appDataLocal + '\\JetBrains\\Toolbox\\scripts\\' + settings.toolbox_shell_script;
+
+    if ((new ActiveXObject('Scripting.FileSystemObject')).FileExists(shellScript)) {
+        return shellScript;
+    }
+
+    return undefined;
 }
 
 function includeFile (filename) {
