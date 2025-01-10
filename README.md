@@ -47,17 +47,14 @@ PhpStorm 8+ (Mac version only) has built-in url handler and `phpstorm://open?fil
 Installing on Windows
 =====================
 
-## Downloading
+## Downloading & Installation
 
 1. clone this repository
 2. go to cloned folder
 3. copy folder ```PhpStorm Protocol (Win)``` to ```C:\Program Files\``` folder
 4. delete cloned folder
-
-## Installation
-
-1. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
-2. agree to whatever Registry Editor asks you
+5. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
+6. agree to whatever Registry Editor asks you
 
 ## Configuration
 
@@ -76,7 +73,7 @@ Installing on Windows
     toolbox_shell_script: 'pstorm.cmd'
    ```
 
-### When not using JetBrains ToolBox)
+### When not using JetBrains ToolBox
 
 1. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file (because each PhpStorm version is installed into it's own sub-folder!):
    #### run_editor.js:
