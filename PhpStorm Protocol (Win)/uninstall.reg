@@ -1,0 +1,6 @@
+Windows Registry Editor Version 5.00
+
+; Uninstall script for PhpStorm Protocol Handler
+
+; Remove the phpstorm protocol handler
+[-HKEY_CLASSES_ROOT\phpstorm]
