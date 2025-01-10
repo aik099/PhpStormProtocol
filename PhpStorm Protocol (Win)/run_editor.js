@@ -221,9 +221,7 @@ function configureToolboxSettings(settings) {
 
     // read version name and product name from product-info.json
     var versionFile = fso.OpenTextFile(toolboxDirectory + settings.folder_name + "\\product-info.json", 1, true);
-    var content = versionFile.ReadAll();
-
-    eval('var productVersion = ' + content + ';');
+    var productVersion = JSON.parse(versionFile.ReadAll());
     settings.window_title = 'PhpStorm ' + productVersion.version;
     editor = '"' + toolboxDirectory + settings.folder_name + '\\' + productVersion.launch[ 0 ].launcherPath.replace(/\//g, '\\') + '"';
 }
