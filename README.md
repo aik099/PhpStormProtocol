@@ -46,12 +46,25 @@ PhpStorm 8+ (Mac version only) has built-in url handler and `phpstorm://open?fil
 
 Installing on Windows
 =====================
+
+## Downloading
+
 1. clone this repository
 2. go to cloned folder
 3. copy folder ```PhpStorm Protocol (Win)``` to ```C:\Program Files\``` folder
-4. double click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
-5. agree to whatever Registry Editor asks you
-6. **(only, when using JetBrains ToolBox)** update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file:
+4. delete cloned folder
+
+## Installation
+
+1. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
+2. agree to whatever Registry Editor asks you
+
+## Configuration
+
+### When using JetBrains ToolBox
+
+1. enable shell scripts in the JetBrains Toolbox configuration
+2. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file:
    #### run_editor.js:
     ```
     // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
@@ -62,7 +75,10 @@ Installing on Windows
     // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
     toolbox_shell_script: 'pstorm.cmd'
    ```
-7. **(only, when not using JetBrains ToolBox)** update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file (because each PhpStorm version is installed into it's own sub-folder!):
+
+### When not using JetBrains ToolBox)
+
+1. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file (because each PhpStorm version is installed into it's own sub-folder!):
    #### run_editor.js:
     ```
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
@@ -79,7 +95,6 @@ Installing on Windows
    // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
    window_title: 'PhpStorm 2017.1.4',
    ```
-7. delete cloned folder
 
 #### Working under another path?
-You can make use of the [project alias settings](/PhpStorm Protocol (Win)/run_editor.js#L11-L14) in case you are working under a network share or Vagrant.
+You can make use of the [project alias settings](/PhpStorm Protocol (Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
