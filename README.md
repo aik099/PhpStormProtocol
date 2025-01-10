@@ -63,12 +63,12 @@ Installing on Windows
 1. enable shell scripts in the JetBrains Toolbox configuration
 2. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file:
    #### run_editor.js:
-    ```
+    ```js
     // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
     toolbox_shell_script: 'PhpStorm.cmd'
     ```
    #### updated run_editor.js
-   ```
+   ```js
     // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
     toolbox_shell_script: 'pstorm.cmd'
    ```
@@ -77,7 +77,7 @@ Installing on Windows
 
 1. update settings at ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.js``` file (because each PhpStorm version is installed into it's own sub-folder!):
    #### run_editor.js:
-    ```
+    ```js
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
 
@@ -85,7 +85,7 @@ Installing on Windows
     window_title: '<phpstorm_window_title>',
     ```
    #### updated run_editor.js
-   ```
+   ```js
    // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
    folder_name: 'PhpStorm 2017.1.4',
 
@@ -94,4 +94,5 @@ Installing on Windows
    ```
 
 #### Working under another path?
-You can make use of the [project alias settings](/PhpStorm Protocol (Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
+
+You can make use of the [project alias settings](https://github.com/aik099/PhpStormProtocol/blob/master/PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
