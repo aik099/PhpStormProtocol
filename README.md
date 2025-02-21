@@ -56,6 +56,11 @@ Installing on Windows
 5. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
 6. agree to whatever Registry Editor asks you
 
+# Uninstallation
+
+1. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\uninstall.reg``` file
+2. agree to whatever Registry Editor asks you
+
 ## Configuration
 
 ### When using JetBrains ToolBox
