@@ -173,6 +173,33 @@ function toolbox_v1_getFavoriteChannel() {
     return 'ch-0'
 }
 
+// Compares two dot-separated version strings segment by segment (numeric), any number of segments,
+// missing trailing segments treated as 0. Returns 1/-1/0. Replaces a prior major.minor.patch-only
+// comparison that could get stuck on an old folder: it required minor to also compare as
+// newer-or-equal before updating the result, even after already detecting a newer major (e.g.
+// "192.6262.66" incorrectly beat "193.5233.101" since 6262 > 5233, despite 193 > 192) — Toolbox's
+// version folders aren't true semver, so that assumption didn't hold.
+function toolbox_v1_compareVersion(v1, v2) {
+    var parts1 = v1.split('.'),
+        parts2 = v2.split('.'),
+        length = Math.max(parts1.length, parts2.length),
+        i, n1, n2;
+
+    for (i = 0; i < length; i++) {
+        n1 = parseInt(parts1[i] || '0', 10);
+        n2 = parseInt(parts2[i] || '0', 10);
+
+        if (n1 > n2) {
+            return 1;
+        }
+        if (n1 < n2) {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
 // Only runs when toolbox_v1_isInstalled() found the "apps\PhpStorm" folder — never on Toolbox
 // 2.0+/3.x (confirmed false on 3.6.2). Scans "apps\PhpStorm\<channel>\<version>\" for the newest
 // installed version and stores the result in settings.toolbox_v1_commandPath.
@@ -205,10 +232,7 @@ function toolbox_v1_configureSettings(settings) {
     // Reference the File collection of the Text directory
     var fileCollection = folder.SubFolders;
 
-    var maxMajor = 0,
-        maxMinor = 0,
-        maxPatch = 0,
-        maxVersionFolder = "";
+    var maxVersionFolder = "";
 
     // Traverse through the fileCollection using the FOR loop
     // read the maximum version from toolbox filesystem
@@ -219,29 +243,8 @@ function toolbox_v1_configureSettings(settings) {
             continue;
         }
 
-        var versionMatch = /(\d+)\.(\d+)\.(\d+)/.exec(folderObject.Name),
-            major = parseInt(versionMatch[ 1 ]),
-            minor = parseInt(versionMatch[ 2 ]),
-            patch = parseInt(versionMatch[ 3 ]);
-
-        if (maxMajor === 0 || maxMajor <= major) {
-            if (maxMajor < major) {
-                maxMinor = 0;
-                maxPatch = 0;
-            }
-            maxMajor = major;
-
-            if (maxMinor === 0 || maxMinor <= minor) {
-                if (maxMinor < minor) {
-                    maxPatch = 0;
-                }
-                maxMinor = minor;
-
-                if (maxPatch === 0 || maxPatch <= patch) {
-                    maxPatch = patch;
-                    maxVersionFolder = folderObject.Name;
-                }
-            }
+        if (maxVersionFolder === "" || toolbox_v1_compareVersion(folderObject.Name, maxVersionFolder) > 0) {
+            maxVersionFolder = folderObject.Name;
         }
     }
 

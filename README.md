@@ -94,4 +94,6 @@ Installing on Windows
 
 #### Working under another path?
 
-You can make use of the [project alias settings](https://github.com/aik099/PhpStormProtocol/blob/master/PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
+* You can make use of the [project alias settings](https://github.com/aik099/PhpStormProtocol/blob/master/PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
+
+* If you're using JetBrains Toolbox, no additional settings need to be configured — PhpStorm is detected automatically.
