@@ -85,17 +85,11 @@ Installing on Windows
     ```js
     // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
-
-    // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: '<phpstorm_window_title>',
     ```
    #### updated run_editor.js
    ```js
    // Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
    folder_name: 'PhpStorm 2017.1.4',
-
-   // Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-   window_title: 'PhpStorm 2017.1.4',
    ```
 
 #### Working under another path?
