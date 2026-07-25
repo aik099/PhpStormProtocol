@@ -22,10 +22,6 @@ var settings = {
     toolbox_shell_script: 'PhpStorm.cmd'
 };
 
-// flag to active Jetbrain Toolbox configuration
-settings.toolBoxActive = isToolboxInstalled();
-
-
 // don't change anything below this line, unless you know what you're doing
 var url = WScript.Arguments(0),
     match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+?)(?:&line=(\d+))?$/.exec(url),
@@ -34,8 +30,8 @@ var url = WScript.Arguments(0),
 // add JSON support
 includeFile('json2.js');
 
-if (settings.toolBoxActive) {
-    configureToolboxSettings(settings);
+if (toolbox_v1_isInstalled()) {
+    toolbox_v1_configureSettings(settings);
 }
 
 if (match) {
@@ -84,7 +80,10 @@ if (match) {
     shell.Exec(command);
 }
 
-function isToolboxInstalled() {
+// Checks for the "apps\<Product>" folder — a false negative on Toolbox 2.0+/3.x (confirmed on
+// 3.6.2), which no longer creates it. Not an authoritative "is Toolbox present" check;
+// getPhpStormCommandPath() below has its own, separate detection.
+function toolbox_v1_isInstalled() {
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
         toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm';
@@ -92,10 +91,24 @@ function isToolboxInstalled() {
     return (new ActiveXObject('Scripting.FileSystemObject')).FolderExists(toolboxDirectory);
 }
 
+// Resolves the PhpStorm launcher. Tries, in priority order:
+//   0. settings.toolbox_v1_commandPath, if toolbox_v1_configureSettings() already resolved one. Kept
+//      as a dedicated field, separate from settings.folder_name/the fallback formula below, since
+//      that formula is for a different resolution path (standalone installs).
+//   1. toolbox_common_getShellScript(), if found (confirmed working on Toolbox 1.28.2 once managed,
+//      and on 3.6.2).
+//   2. Toolbox's state.json parsed directly — picks the *first* entry with toolId "PhpStorm",
+//      ignoring settings.toolbox_update_channel_dir (confirmed: with multiple channels installed,
+//      this can resolve a different PhpStorm build than #1 does on the same machine).
+//   3. The disk_letter + folder_name fallback, for standalone installs.
 function getPhpStormCommandPath() {
+    if (settings.toolbox_v1_commandPath !== undefined) {
+        return settings.toolbox_v1_commandPath;
+    }
+
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        toolboxShellScript = getToolboxShellScript(appDataLocal);
+        toolboxShellScript = toolbox_common_getShellScript(appDataLocal);
 
     if (toolboxShellScript !== undefined) {
         return toolboxShellScript;
@@ -115,7 +128,7 @@ function getPhpStormCommandPath() {
 
     var tools = state.tools || [];
     for (var i = 0; i < tools.length; i++) {
-        if (tools[i].toolId == 'PhpStorm') {
+        if (tools[i].toolId === 'PhpStorm') {
             var basePath = tools[i].launchCommand.indexOf(tools[i].installLocation) === -1 ? tools[i].installLocation +  "\\" : "";
 
             return (basePath + tools[i].launchCommand).replace(/\//g, "\\");
@@ -125,7 +138,10 @@ function getPhpStormCommandPath() {
     return defaultCommandPath;
 }
 
-function getFavoritePhpStormChannel() {
+// Reads ".settings.json"'s favorite-channel ordering. Only consulted by toolbox_v1_configureSettings()
+// — NOT by getPhpStormCommandPath()'s state.json branch, so on Toolbox 2.0+ with multiple installed
+// channels this setting has no effect on which build actually launches.
+function toolbox_v1_getFavoriteChannel() {
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
         settingsFile = appDataLocal + '\\JetBrains\\Toolbox\\.settings.json';
@@ -141,7 +157,7 @@ function getFavoritePhpStormChannel() {
 
     var apps = (settings.ordering || {}).local || [];
     for (var i = 0; i < apps.length; i++) {
-        if (apps[i].application_id == 'PhpStorm') {
+        if (apps[i].application_id === 'PhpStorm') {
             return apps[i].channel_id;
         }
     }
@@ -149,19 +165,25 @@ function getFavoritePhpStormChannel() {
     return 'ch-0'
 }
 
-function configureToolboxSettings(settings) {
+// Only runs when toolbox_v1_isInstalled() found the "apps\PhpStorm" folder — never on Toolbox
+// 2.0+/3.x (confirmed false on 3.6.2). Scans "apps\PhpStorm\<channel>\<version>\" for the newest
+// installed version and stores the result in settings.toolbox_v1_commandPath.
+function toolbox_v1_configureSettings(settings) {
     var shell = new ActiveXObject('WScript.Shell'),
         appDataLocal = shell.ExpandEnvironmentStrings("%localappdata%"),
-        toolboxShellScript = getToolboxShellScript(appDataLocal);
+        toolboxShellScript = toolbox_common_getShellScript(appDataLocal);
 
-    // The JetBrains Toolbox Shell Script is clever enough to autofocus PhpStorm window after opening a file in it
+    // Skip the folder scan below when a shell script exists — getPhpStormCommandPath() will use it
+    // directly instead. (Window activation itself is handled by PhpStorm's own single-instance
+    // relaunch behavior, confirmed to work the same way whether launched via this shell script or a
+    // direct exe invocation — not something specific to the shell script.)
     if (toolboxShellScript !== undefined) {
         return;
     }
 
     // Detect Toolbox PHPStorm top channel
     if (settings.toolbox_update_channel_dir == null) {
-        settings.toolbox_update_channel_dir = getFavoritePhpStormChannel();
+        settings.toolbox_update_channel_dir = toolbox_v1_getFavoriteChannel();
     }
 
     var toolboxDirectory = appDataLocal + '\\JetBrains\\Toolbox\\apps\\PhpStorm\\' + settings.toolbox_update_channel_dir + '\\';
@@ -220,10 +242,12 @@ function configureToolboxSettings(settings) {
     // read launcher path from product-info.json
     var versionFile = fso.OpenTextFile(toolboxDirectory + settings.folder_name + "\\product-info.json", 1, true);
     var productVersion = JSON.parse(versionFile.ReadAll());
-    editor = '"' + toolboxDirectory + settings.folder_name + '\\' + productVersion.launch[ 0 ].launcherPath.replace(/\//g, '\\') + '"';
+    settings.toolbox_v1_commandPath = toolboxDirectory + settings.folder_name + '\\' + productVersion.launch[ 0 ].launcherPath.replace(/\//g, '\\');
 }
 
-function getToolboxShellScript(appDataLocal) {
+// Checks whether Toolbox generated a launcher script (scripts\<toolbox_shell_script>). Used by both
+// getPhpStormCommandPath() and toolbox_v1_configureSettings() (to skip its folder scan).
+function toolbox_common_getShellScript(appDataLocal) {
     var shellScript = appDataLocal + '\\JetBrains\\Toolbox\\scripts\\' + settings.toolbox_shell_script;
 
     if ((new ActiveXObject('Scripting.FileSystemObject')).FileExists(shellScript)) {
