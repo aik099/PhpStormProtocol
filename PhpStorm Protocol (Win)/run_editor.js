@@ -8,9 +8,6 @@ var settings = {
     // (only, when not using JetBrains Toolbox) Set to folder name, where PhpStorm was installed to (e.g. 'PhpStorm')
     folder_name: '<phpstorm_folder_name>',
 
-    // (only, when not using JetBrains Toolbox) Set to window title (only text after dash sign), that you see, when switching to running PhpStorm instance
-    window_title: '<phpstorm_window_title>',
-
     // In case your file is mapped via a network share and paths do not match.
     // eg. /var/www will can replaced with Y:/
     projects_basepath: '',
@@ -85,7 +82,6 @@ if (match) {
         .replace(/\//g, '\\');
 
     shell.Exec(command);
-    shell.AppActivate(settings.window_title);
 }
 
 function isToolboxInstalled() {
@@ -221,10 +217,9 @@ function configureToolboxSettings(settings) {
 
     settings.folder_name = maxVersionFolder;
 
-    // read version name and product name from product-info.json
+    // read launcher path from product-info.json
     var versionFile = fso.OpenTextFile(toolboxDirectory + settings.folder_name + "\\product-info.json", 1, true);
     var productVersion = JSON.parse(versionFile.ReadAll());
-    settings.window_title = 'PhpStorm ' + productVersion.version;
     editor = '"' + toolboxDirectory + settings.folder_name + '\\' + productVersion.launch[ 0 ].launcherPath.replace(/\//g, '\\') + '"';
 }
 
