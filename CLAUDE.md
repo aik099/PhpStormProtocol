@@ -79,9 +79,9 @@ not new features. Expect this to continue.
 - Toolbox layout changes: #30 (2019, initial support) → #36/#37 (version-folder detection) → #38
   (auto-detect) → #48 (favorite channel) → #50 (2023, `state.json` — **broke v1 support**, see BC
   section) → #54 (fresh install) → #58/#59 (prefer shell script) → #66 (2025, absolute
-  `launchCommand`) → #69 (2026, `.idea` folder vs `.idea/.name` detection fix, open) → #72 (2026,
-  restored v1 support broken by #50, open).
-- #71 (2026, merged): removed non-functional `window_title`/`AppActivate`.
+  `launchCommand`) → #69 (2026, `.idea` folder vs `.idea/.name` detection fix) → #72 (2026, restored
+  v1 support broken by #50).
+- #71 (2026): removed non-functional `window_title`/`AppActivate`.
 - Windows/registry quirks: #21/#25/#26/#28, `Icon\r` removal (`cc2fd3b`).
 - PhpStorm version drift: #8/#11/#16 (default folder-name bumps for direct installs).
 - Minority are real new features: #17 (Linux docs), #22 (Mac scheme), #52/#53 (no-line-number
