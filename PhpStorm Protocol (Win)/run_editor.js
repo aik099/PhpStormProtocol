@@ -13,9 +13,10 @@ var settings = {
     projects_basepath: '',
     projects_path_alias: '',
 
-    // PhpStorm directory name in Toolbox directory
-    // eg. for C:\Users\%username%\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-1 use 'ch-1'
-    // Leave null to use the first PHPStorm version in Toolbox
+    // Selects which installed PhpStorm channel/version Toolbox should launch, when more than one is
+    // registered. Legacy Toolbox 1.x: the folder name under ...\Toolbox\apps\PhpStorm\ (e.g. 'ch-1').
+    // Toolbox 2.0+/3.x: the channelId (or just its uuid part) from state.json's "tools" entries.
+    // Leave null to use the first (or, on legacy Toolbox 1.x, favorite-ordered) PhpStorm found.
     toolbox_update_channel_dir: null,
 
     // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
@@ -97,9 +98,8 @@ function toolbox_v1_isInstalled() {
 //      that formula is for a different resolution path (standalone installs).
 //   1. toolbox_common_getShellScript(), if found (confirmed working on Toolbox 1.28.2 once managed,
 //      and on 3.6.2).
-//   2. Toolbox's state.json parsed directly — picks the *first* entry with toolId "PhpStorm",
-//      ignoring settings.toolbox_update_channel_dir (confirmed: with multiple channels installed,
-//      this can resolve a different PhpStorm build than #1 does on the same machine).
+//   2. Toolbox's state.json parsed directly — matches an entry with toolId "PhpStorm" whose
+//      channelId contains settings.toolbox_update_channel_dir if set, else the first such entry.
 //   3. The disk_letter + folder_name fallback, for standalone installs.
 function getPhpStormCommandPath() {
     if (settings.toolbox_v1_commandPath !== undefined) {
@@ -128,11 +128,19 @@ function getPhpStormCommandPath() {
 
     var tools = state.tools || [];
     for (var i = 0; i < tools.length; i++) {
-        if (tools[i].toolId === 'PhpStorm') {
-            var basePath = tools[i].launchCommand.indexOf(tools[i].installLocation) === -1 ? tools[i].installLocation +  "\\" : "";
-
-            return (basePath + tools[i].launchCommand).replace(/\//g, "\\");
+        if (tools[i].toolId !== 'PhpStorm') {
+            continue;
         }
+
+        // channelId comes in two shapes across Toolbox versions ("<uuid>" or "PhpStorm-<uuid>") —
+        // match by substring so either works with just the uuid portion in the setting.
+        if (settings.toolbox_update_channel_dir !== null && tools[i].channelId.indexOf(settings.toolbox_update_channel_dir) === -1) {
+            continue;
+        }
+
+        var basePath = tools[i].launchCommand.indexOf(tools[i].installLocation) === -1 ? tools[i].installLocation +  "\\" : "";
+
+        return (basePath + tools[i].launchCommand).replace(/\//g, "\\");
     }
 
     return defaultCommandPath;
