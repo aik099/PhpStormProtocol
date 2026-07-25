@@ -56,7 +56,7 @@ if (match) {
         while (search_path.lastIndexOf('\\') !== -1) {
             search_path = search_path.substring(0, search_path.lastIndexOf('\\'));
 
-            if (file_system.FileExists(search_path + '\\.idea\\.name')) {
+            if (file_system.FolderExists(search_path + '\\.idea')) {
                 project = search_path;
                 break;
             }
