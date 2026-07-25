@@ -47,6 +47,15 @@ PhpStorm 8+ (Mac version only) has built-in url handler and `phpstorm://open?fil
 Installing on Windows
 =====================
 
+## Compatibility
+
+Works with a direct (standalone) PhpStorm install, or with PhpStorm installed/managed through
+JetBrains Toolbox — legacy Toolbox 1.x and current Toolbox 2.0+/3.x are both supported, including
+selecting a specific installed channel/version when more than one is present.
+
+Tested with Toolbox 1.28.2, 2.9.1, and 3.6.2, and PhpStorm 2025.2, 2026.1.4, and 2026.2.0.1, on
+Windows 11 (ARM).
+
 ## Downloading & Installation
 
 1. clone this repository

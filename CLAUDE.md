@@ -40,7 +40,8 @@ by manually running the install flow on the target OS.
 - Mac logic lives in `Contents/bin/parse_url.sh` (plain shell, easy to edit) — `main.scpt` is a
   compiled AppleScript binary and is not meant to be hand-edited as text.
 - When changing install/uninstall behavior, keep `README.md` in sync — it is the only end-user
-  documentation and is written per-OS (Windows/Mac/Linux sections).
+  documentation and is written per-OS (Windows/Mac/Linux sections). Its Windows "Compatibility"
+  section lists tested Toolbox/PhpStorm versions — update it when that coverage changes.
 - Naming: Toolbox-related functions are prefixed `toolbox_v1_` (legacy folder-scan only) or
   `toolbox_common_` (works across all tested Toolbox generations). Keep this convention for new code.
 - `getPhpStormCommandPath`'s `state.json` branch matches `settings.toolbox_update_channel_dir`
