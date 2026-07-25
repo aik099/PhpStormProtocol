@@ -62,7 +62,6 @@ if (match) {
         while (search_path.lastIndexOf('\\') !== -1) {
             search_path = search_path.substring(0, search_path.lastIndexOf('\\'));
 
-            // The .idea/.name file is not always present, look for the .idea folder instead.
             if (file_system.FolderExists(search_path + '\\.idea')) {
                 project = search_path;
                 break;
