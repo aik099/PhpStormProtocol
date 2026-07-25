@@ -43,10 +43,10 @@ by manually running the install flow on the target OS.
   documentation and is written per-OS (Windows/Mac/Linux sections).
 - Naming: Toolbox-related functions are prefixed `toolbox_v1_` (legacy folder-scan only) or
   `toolbox_common_` (works across all tested Toolbox generations). Keep this convention for new code.
-- Known unfixed gap: `getPhpStormCommandPath`'s `state.json` branch picks the first `toolId ==
-  'PhpStorm'` entry, ignoring `settings.toolbox_update_channel_dir` — multi-channel Toolbox 2.0+/3.x
-  installs may launch the wrong version. `channels\` there holds per-channel JSON *files*, not
-  folders.
+- `getPhpStormCommandPath`'s `state.json` branch matches `settings.toolbox_update_channel_dir`
+  against each entry's `channelId` (substring, since the shape varies by Toolbox version) to pick
+  among multiple installed channels; `null` keeps the old first-match default. `channels\` there
+  holds per-channel JSON *files*, not folders.
 
 ## Backward-compatibility promise — the core design constraint
 
@@ -80,7 +80,8 @@ not new features. Expect this to continue.
   (auto-detect) → #48 (favorite channel) → #50 (2023, `state.json` — **broke v1 support**, see BC
   section) → #54 (fresh install) → #58/#59 (prefer shell script) → #66 (2025, absolute
   `launchCommand`) → #69 (2026, `.idea` folder vs `.idea/.name` detection fix) → #72 (2026, restored
-  v1 support broken by #50).
+  v1 support broken by #50) → #74 (2026, honor `toolbox_update_channel_dir` in the `state.json` path,
+  which #50 never wired up).
 - #71 (2026): removed non-functional `window_title`/`AppActivate`.
 - Windows/registry quirks: #21/#25/#26/#28, `Icon\r` removal (`cc2fd3b`).
 - PhpStorm version drift: #8/#11/#16 (default folder-name bumps for direct installs).
