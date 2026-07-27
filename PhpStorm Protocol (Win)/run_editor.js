@@ -115,7 +115,18 @@ function getPhpStormCommandPath() {
     }
 
     var settingsStateFile = appDataLocal + '\\JetBrains\\Toolbox\\state.json',
-        defaultCommandPath = settings.disk_letter + '\\' + ( settings.x64 ? 'Program Files' : 'Program Files (x86)' ) + '\\JetBrains\\' + settings.folder_name + ( settings.x64 ? '\\bin\\phpstorm64.exe' : '\\bin\\phpstorm.exe' );
+        programFilesFolder,
+        executableName;
+
+    if (settings.x64) {
+        programFilesFolder = settings.disk_letter + '\\Program Files';
+        executableName = '\\bin\\phpstorm64.exe';
+    } else {
+        programFilesFolder = settings.disk_letter + '\\Program Files (x86)';
+        executableName = '\\bin\\phpstorm.exe';
+    }
+
+    var defaultCommandPath = programFilesFolder + '\\JetBrains\\' + settings.folder_name + executableName;
 
     try {
         var fileStream = (new ActiveXObject('Scripting.FileSystemObject')).OpenTextFile(settingsStateFile, 1, false);

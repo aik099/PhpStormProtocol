@@ -101,6 +101,13 @@ Windows 11 (ARM).
    folder_name: 'PhpStorm 2017.1.4',
    ```
 
+* On some systems the installed `phpstorm64.exe`/`phpstorm.exe` doesn't match the `x64` setting's
+  assumed `Program Files`/`Program Files (x86)` folder — e.g. [#56](https://github.com/aik099/PhpStormProtocol/issues/56)
+  reports a 64-bit `phpstorm64.exe` installed under `Program Files (x86)`. If the executable isn't
+  found, check where PhpStorm actually installed and hand-adjust the `programFilesFolder`/
+  `executableName` values built in `getPhpStormCommandPath()` (`run_editor.js`) to match, rather than
+  relying on the `x64` setting alone.
+
 #### Working under another path?
 
 * You can make use of the [project alias settings](https://github.com/aik099/PhpStormProtocol/blob/master/PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
