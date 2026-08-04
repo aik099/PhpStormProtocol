@@ -38,7 +38,9 @@ if (toolbox_v1_isInstalled()) {
 if (match) {
     var shell = new ActiveXObject('WScript.Shell'),
         file_system = new ActiveXObject('Scripting.FileSystemObject'),
-        file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' '),
+        // "url=file://%f" with a Windows path decodes to "/C:/...", and that leading slash makes the
+        // path unusable.
+        file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' ').replace(/^[\\\/]([A-Za-z]:)/, '$1'),
         search_path = file.replace(/\//g, '\\'),
         editor = '"' + getPhpStormCommandPath() + '"';
 
