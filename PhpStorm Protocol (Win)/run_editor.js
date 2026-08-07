@@ -39,12 +39,13 @@ if (match) {
     var shell = new ActiveXObject('WScript.Shell'),
         file_system = new ActiveXObject('Scripting.FileSystemObject'),
         file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' '),
-        search_path = file.replace(/\//g, '\\'),
         editor = '"' + getPhpStormCommandPath() + '"';
 
     if (settings.projects_basepath !== '' && settings.projects_path_alias !== '') {
         file = file.replace(new RegExp('^' + settings.projects_basepath), settings.projects_path_alias);
     }
+
+    var search_path = file.replace(/\//g, '\\');
 
     // If only a folder is specified, don't look for a project file or line number
     var isFolder = file_system.FolderExists(search_path);
