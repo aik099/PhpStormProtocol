@@ -38,7 +38,8 @@ if (toolbox_v1_isInstalled()) {
 if (match) {
     var shell = new ActiveXObject('WScript.Shell'),
         file_system = new ActiveXObject('Scripting.FileSystemObject'),
-        file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' '),
+        // Also remove leading slash before drive letter (e.g. "/C:/...") in pre-PhpStorm 8 links (e.g. "url=file://%f").
+        file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' ').replace(/^[\\\/]([A-Za-z]:)/, '$1'),
         editor = '"' + getPhpStormCommandPath() + '"';
 
     if (settings.projects_basepath !== '' && settings.projects_path_alias !== '') {
