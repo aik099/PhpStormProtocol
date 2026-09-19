@@ -113,3 +113,11 @@ Windows 11 (ARM).
 * You can make use of the [project alias settings](https://github.com/aik099/PhpStormProtocol/blob/master/PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
 
 * If you're using JetBrains Toolbox, no additional settings need to be configured — PhpStorm is detected automatically.
+
+## Troubleshooting
+
+If clicking a link doesn't open PhpStorm as expected, set `dry_run: true` in
+`C:\Program Files\PhpStorm Protocol (Win)\run_editor.js`, then click the link again. Instead of
+launching PhpStorm, a popup will show the exact command it resolved to (or an error message) -
+copy that into your [bug report](https://github.com/aik099/PhpStormProtocol/issues/new). Remember
+to set it back to `false` afterwards.
