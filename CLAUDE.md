@@ -6,12 +6,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 PhpStormProtocol registers a `phpstorm://` custom URL protocol handler so that links (e.g. from a
 debugger's stack trace: Xdebug's `xdebug.file_link_format`, Nette debugger, In-Portal debugger) open
-the given file at a given line directly in PhpStorm. It is an OS-level protocol-handler installer, not
-a JetBrains plugin, an application with a build/test suite, or a long-running service.
+the given file at a given line directly in PhpStorm. It is an OS-level protocol-handler installer,
+not a JetBrains plugin or a long-running service.
 
-There is no build, test, lint, or CI setup in this repo (no package.json/composer.json/Makefile/
-.github/workflows) — changes are made directly to the installer scripts/registry files and verified
-by manually running the install flow on the target OS.
+The Windows installer (`run_editor.js`) has an automated PHP test suite (`tests/windows/`, CI via
+`.github/workflows/windows-tests.yml`) that drives the real script under `cscript` in isolation —
+see CONTRIBUTING.md for how to run it. Mac and Linux still have no build/test/lint setup; those
+installer scripts are verified by manually running the install flow on the target OS.
 
 ## Layout
 
@@ -34,12 +35,16 @@ by manually running the install flow on the target OS.
   - `Contents/bin/parse_url.sh` — shell script invoked by the applet; regex-parses the `phpstorm://`
     URL and shells out to `/usr/local/bin/pstorm "$file:$line"`.
   - `Contents/Resources/Scripts/main.scpt` — compiled AppleScript source driving the applet.
+- `tests/windows/` — automated PHP test suite for `run_editor.js` (PHP 7.4+, no Composer). Needs
+  actual Windows to run (`cscript`/`subst`) — `php -l` is the only useful check from elsewhere.
 
 ## Working in this repo
 
 - Windows logic lives entirely in `run_editor.js` — read its URL-parsing regex and Toolbox-detection
   logic before changing path resolution or URL format support, since both direct-install and Toolbox
-  install paths must keep working.
+  install paths must keep working. Run `php tests/windows/run-tests.php` after changing it — it
+  complements, not replaces, the manual testing matrix in CONTRIBUTING.md, since it exercises the
+  general resolution logic against faked installs, not real Toolbox/PhpStorm version interop.
 - Mac logic lives in `Contents/bin/parse_url.sh` (plain shell, easy to edit) — `main.scpt` is a
   compiled AppleScript binary and is not meant to be hand-edited as text.
 - When changing install/uninstall behavior, keep `README.md` in sync — it is the only end-user

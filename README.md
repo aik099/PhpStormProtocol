@@ -1,6 +1,9 @@
 
 Overview
 ========
+
+[![Windows Tests](https://github.com/aik099/PhpStormProtocol/actions/workflows/windows-tests.yml/badge.svg)](https://github.com/aik099/PhpStormProtocol/actions/workflows/windows-tests.yml)
+
 This app allows to use ```phpstorm://``` protocol to open a file in a [PhpStorm IDE](http://www.jetbrains.com/phpstorm/) the same way as it's done in [TextMate, (section 21.2)](http://manual.macromates.com/en/using_textmate_from_terminal.html).
 
 NOTE: Built-in ``idea://`` and ``phpstorm://`` protocols are supported in PhpStorm 8 EAP 138.190+

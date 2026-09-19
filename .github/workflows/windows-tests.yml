@@ -1,0 +1,30 @@
+name: Windows tests
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'PhpStorm Protocol (Win)/**'
+      - 'tests/windows/**'
+      - '.github/workflows/windows-tests.yml'
+  pull_request:
+    paths:
+      - 'PhpStorm Protocol (Win)/**'
+      - 'tests/windows/**'
+      - '.github/workflows/windows-tests.yml'
+
+jobs:
+  run-editor-js:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Run tests
+        run: php tests/windows/run-tests.php
