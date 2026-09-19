@@ -1,0 +1,4 @@
+*.js text eol=lf
+*.reg text eol=crlf
+*.md text eol=lf
+*.sh text eol=lf
