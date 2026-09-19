@@ -38,6 +38,11 @@ var url = WScript.Arguments(0),
 // add JSON support
 includeFile('json2.js');
 
+function fail(message) {
+    WScript.Echo(message);
+    WScript.Quit(1);
+}
+
 if (toolbox_v1_isInstalled()) {
     toolbox_v1_configureSettings(settings);
 }
@@ -46,10 +51,18 @@ if (match) {
     var file_system = new ActiveXObject('Scripting.FileSystemObject'),
         // Also remove leading slash before drive letter (e.g. "/C:/...") in pre-PhpStorm 8 links (e.g. "url=file://%f").
         file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' ').replace(/^[\\\/]([A-Za-z]:)/, '$1'),
-        editor = '"' + getPhpStormCommandPath() + '"';
+        phpStormCommandPath = getPhpStormCommandPath(),
+        editor = '"' + phpStormCommandPath + '"';
+
+    if (!file_system.FileExists(phpStormCommandPath)) {
+        fail('PhpStorm executable not found: ' + phpStormCommandPath + ' - check your settings');
+    }
 
     if (settings.projects_basepath !== '' && settings.projects_path_alias !== '') {
         file = file.replace(new RegExp('^' + settings.projects_basepath), settings.projects_path_alias);
+    }
+    else if ( settings.projects_basepath !== '' || settings.projects_path_alias !== '' ) {
+        fail('Incomplete projects_basepath/projects_path_alias configuration - both must be set together, or both left empty');
     }
 
     var search_path = file.replace(/\//g, '\\');
@@ -57,6 +70,10 @@ if (match) {
     // If only a folder is specified, don't look for a project file or line number
     var isFolder = file_system.FolderExists(search_path);
     var isFile = file_system.FileExists(search_path);
+
+    if (!isFolder && !isFile) {
+        fail('Path not found: ' + search_path + ' - check the URL and any projects_basepath/projects_path_alias settings');
+    }
 
     if (isFolder) {
         project = search_path;
@@ -251,6 +268,10 @@ function toolbox_v1_configureSettings(settings) {
     // Reference the FileSystemObject
     var fso = new ActiveXObject('Scripting.FileSystemObject');
 
+    if (!fso.FolderExists(toolboxDirectory)) {
+        fail('Toolbox channel directory not found: ' + toolboxDirectory + ' (check settings.toolbox_update_channel_dir)');
+    }
+
     // Reference the Text directory
     var folder = fso.GetFolder(toolboxDirectory);
 
@@ -271,6 +292,10 @@ function toolbox_v1_configureSettings(settings) {
         if (maxVersionFolder === "" || toolbox_v1_compareVersion(folderObject.Name, maxVersionFolder) > 0) {
             maxVersionFolder = folderObject.Name;
         }
+    }
+
+    if (maxVersionFolder === "") {
+        fail('No PhpStorm version folder found under ' + toolboxDirectory + ' - check settings.toolbox_update_channel_dir');
     }
 
     settings.folder_name = maxVersionFolder;
