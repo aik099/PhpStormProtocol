@@ -1,9 +1,26 @@
 # Contributing
 
-There's no build, test, lint, or CI setup in this repo — changes to the installer scripts are
-verified by manually running the install flow (or invoking `run_editor.js` directly) on the
-target OS. This doc covers how that testing usually happens for Windows changes, since that's
-where almost all the complexity (and almost all bug reports) live.
+Changes to the installer scripts are verified by manually running the install flow (or invoking
+`run_editor.js` directly) on the target OS, plus an automated test suite for `run_editor.js`
+itself (Windows only - see below). This doc covers how manual testing usually happens for Windows
+changes, since that's where almost all the complexity (and almost all bug reports) live.
+
+## Automated tests
+
+`tests/windows/` has a PHP test suite that runs the real `run_editor.js` under `cscript`, in an
+isolated scratch directory, and asserts on the resolved command. Requires PHP 7.4+ (any 7.4-8.x
+build works, no Composer) and Windows itself (it needs `cscript`/`subst`).
+
+```cmd
+php tests\windows\run-tests.php                     :: run everything
+php tests\windows\run-tests.php --filter=standalone :: run test cases whose name contains "standalone"
+```
+
+CI runs this suite automatically on `windows-latest` for any PR touching `PhpStorm Protocol (Win)/`
+or `tests/windows/` (see `.github/workflows/windows-tests.yml`).
+
+This complements, not replaces, the manual testing below - it exercises the general resolution
+logic against faked installs, not real Toolbox/PhpStorm version interop.
 
 ## Getting test builds
 
