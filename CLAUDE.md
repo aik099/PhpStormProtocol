@@ -23,6 +23,9 @@ by manually running the install flow on the target OS.
     priority chain (`settings.toolbox_v1_commandPath` → shell script → `state.json` → standalone
     fallback), launches via `shell.Exec`. No `AppActivate`/window-focus step (removed in #71 —
     PhpStorm self-focuses regardless of launch path; the old code never worked anyway).
+    `settings.dry_run` (or a `--dry-run` 2nd CLI argument) echoes the resolved command instead of
+    launching PhpStorm — the human-facing troubleshooting toggle and the script/automation-facing
+    equivalent for the same seam.
   - `json2.js` — vendored JSON polyfill, included by `run_editor.js`.
   - `run_editor.reg` — installs the `HKEY_CLASSES_ROOT\phpstorm` registry key pointing at
     `run_editor.js`.

@@ -20,13 +20,20 @@ var settings = {
     toolbox_update_channel_dir: null,
 
     // Set to PhpStorm shell script (filename ends with "*.cmd") from the "C:\Users\%username%\AppData\Local\JetBrains\Toolbox\scripts" directory.
-    toolbox_shell_script: 'PhpStorm.cmd'
+    toolbox_shell_script: 'PhpStorm.cmd',
+
+    // Set to 'true' (without quotes) to show the resolved command instead of launching PhpStorm -
+    // useful for troubleshooting: click the link as usual, then copy the popped-up text into a bug report.
+    dry_run: false
 };
 
 // don't change anything below this line, unless you know what you're doing
 var url = WScript.Arguments(0),
     match = /^phpstorm:\/\/open\/?\?(url=file:\/\/|file=)(.+?)(?:&line=(\d+))?$/.exec(url),
-    project = '';
+    project = '',
+    // settings.dry_run is the user-facing toggle; a "--dry-run" 2nd command-line argument is an
+    // equivalent, script-friendly way to request the same behavior.
+    isDryRun = settings.dry_run || (WScript.Arguments.Count() > 1 && WScript.Arguments(1) === '--dry-run');
 
 // add JSON support
 includeFile('json2.js');
@@ -36,8 +43,7 @@ if (toolbox_v1_isInstalled()) {
 }
 
 if (match) {
-    var shell = new ActiveXObject('WScript.Shell'),
-        file_system = new ActiveXObject('Scripting.FileSystemObject'),
+    var file_system = new ActiveXObject('Scripting.FileSystemObject'),
         // Also remove leading slash before drive letter (e.g. "/C:/...") in pre-PhpStorm 8 links (e.g. "url=file://%f").
         file = decodeURIComponent(match[ 2 ]).replace(/\+/g, ' ').replace(/^[\\\/]([A-Za-z]:)/, '$1'),
         editor = '"' + getPhpStormCommandPath() + '"';
@@ -80,7 +86,13 @@ if (match) {
         .replace(/%project%/g, project)
         .replace(/\//g, '\\');
 
-    shell.Exec(command);
+    if (isDryRun) {
+        WScript.Echo(command);
+    } else {
+        var shell = new ActiveXObject('WScript.Shell');
+
+        shell.Exec(command);
+    }
 }
 
 // Checks for the "apps\<Product>" folder — a false negative on Toolbox 2.0+/3.x (confirmed on
