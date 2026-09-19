@@ -65,7 +65,7 @@ Windows 11 (ARM).
 5. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\run_editor.reg``` file
 6. agree to whatever Registry Editor asks you
 
-# Uninstallation
+## Uninstallation
 
 1. double-click on ```C:\Program Files\PhpStorm Protocol (Win)\uninstall.reg``` file
 2. agree to whatever Registry Editor asks you
@@ -108,7 +108,7 @@ Windows 11 (ARM).
   `executableName` values built in `getPhpStormCommandPath()` (`run_editor.js`) to match, rather than
   relying on the `x64` setting alone.
 
-#### Working under another path?
+### Working under another path?
 
 * You can make use of the [project alias settings](https://github.com/aik099/PhpStormProtocol/blob/master/PhpStorm%20Protocol%20(Win)/run_editor.js#L14-L17) in case you are working under a network share or Vagrant.
 
